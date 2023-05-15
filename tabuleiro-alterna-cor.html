@@ -1,0 +1,50 @@
+<canvas width="400" height="400"></canvas>
+<button>Alternar cor!</button>
+<script>
+    
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    function desenharQuadrado(x, y, cor) {
+    	pincel.fillStyle = cor;
+	    pincel.fillRect(x, y, 50, 50);
+	    pincel.strokeStyle = 'blue';
+	    pincel.strokeRect(x, y, 50, 50);
+    }
+
+    function desenharTabuleiro(mudarCor) {
+
+	    for (var k=0; k<=400; k = k + 50) {		
+			for (var i=0; i<=400; i = i + 50) {
+
+				if(mudarCor) {
+					desenharQuadrado(i, k, 'lightgreen');
+					mudarCor = false;
+				} else {
+					desenharQuadrado(i, k, 'red');
+					mudarCor = true;
+				}
+
+	    	}
+	    }
+
+    }
+
+    function alternarCor() {
+    	if(mudarCor) {
+    		mudarCor = false;
+    	} else {
+    		mudarCor = true;
+    	}
+    	desenharTabuleiro(mudarCor);
+    }
+
+    var mudarCor = false;
+
+    desenharTabuleiro(mudarCor);
+
+    var button = document.querySelector('button');
+    button.onclick = alternarCor;
+
+
+</script>
