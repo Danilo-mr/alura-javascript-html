@@ -1,0 +1,122 @@
+<canvas width="500" height="500"></canvas>
+<br>
+<button>Mover aleatoriamente!</button>
+<script>
+
+	var tela = document.querySelector('canvas');
+	var pincel = tela.getContext('2d');
+
+	pincel.fillStyle = '#85FDAB';
+	pincel.fillRect(0, 0, 500, 500);
+
+	function desenharCirculo(x, y, cor, raio) {
+		pincel.fillStyle = cor;
+		pincel.beginPath();
+		pincel.arc(x, y, raio, 0, 2*Math.PI);
+		pincel.fill();
+	}
+
+	function limpaTela() {
+		pincel.fillStyle = '#85FDAB';
+		pincel.fillRect(0, 0, 500, 500);
+	}
+
+	function andarParaDireita(circulo) {
+		limpaTela();
+		desenharCirculo(x[circulo], y[circulo], cor[circulo], raio);
+		x[circulo]++;
+		for(var i = 0; i < qtdCirculos; i++) {
+			desenharCirculo(x[i], y[i], cor[i], raio);
+		}
+		if(x[circulo]==500-raio) {
+			cor[circulo] = corAleatoria();
+			direcoes[circulo] = 'esquerda';
+		}
+	}
+
+	function andarParaEsquerda(circulo) {
+		limpaTela();
+		desenharCirculo(x[circulo], y[circulo], cor[circulo], raio);
+		x[circulo]--;
+		for(var i = 0; i < qtdCirculos; i++) {
+			desenharCirculo(x[i], y[i], cor[i], raio);
+		}
+		if(x[circulo]==raio) {
+			cor[circulo] = corAleatoria();
+			direcoes[circulo] = 'direita';
+		}
+		
+	}
+
+	function moverCirculo() {
+		for(var i = 0; i < qtdCirculos; i++) {
+			if(direcoes[i] == 'direita') {
+				andarParaDireita(i);
+			} 
+			if(direcoes[i] == 'esquerda') {
+				andarParaEsquerda(i);
+			}
+		}
+	}
+
+	function preencherCoresAleatorias() {
+		var cores = [];
+		for(var i=0; i < qtdCirculos; i++) {
+			cores.push(corAleatoria());
+		}
+		return cores;
+	}
+
+	function corAleatoria() {
+		return cores[Math.round(Math.random()*5)];
+	}
+
+	function preencherXInicial() {
+		var x = [];
+			for(var k = 30, i = 0; i < qtdCirculos; i++, k = k + 20) {
+				x.push(k);
+			}
+		return x;
+	}
+
+	function preencherYInicial() {
+		var x = [];
+			for(var k = 30, i = 0; i < qtdCirculos; i++, k = k + 50) {
+				x.push(k);
+			}
+		return x;
+	}
+
+	function preencherDirecoesIniciais() {
+		var direcoes= [];
+		for(var i = 0; i < qtdCirculos; i++) {
+			direcoes[i] = direcaoAleatoria();
+		}
+		return direcoes;
+	}
+
+	function direcaoAleatoria() {
+		var direcao = direcaoPermitida[Math.round(Math.random())]
+		console.log(direcao);
+		return direcao;
+	}
+
+	var direcaoPermitida = ['direita', 'esquerda'];
+	var qtdCirculos = 10;
+	var cores = ['blue', 'red', 'purple', 'green', 'yellow', 'orange'];
+	var x = preencherXInicial();
+	var y = preencherYInicial();
+	var cor = preencherCoresAleatorias();
+	raio = 20;
+	var direcoes = preencherDirecoesIniciais();
+
+	var button = document.querySelector('button');
+	
+	var atualizacaoFrame = setInterval(moverCirculo, 5);
+	
+	button.onclick = function() {
+		direcoes = preencherDirecoesIniciais();
+		clearInterval(atualizacaoFrame);
+		atualizacaoFrame = setInterval(moverCirculo, 5);
+	}
+</script>
